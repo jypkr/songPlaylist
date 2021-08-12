@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+	<link rel="stylesheet" href="./reset.css">
+	
+	<title>SongPlayList</title>
+	<style>
+		.card {
+			display : flex;
+			justify-content: center;
+			text-align: center;
+		}
+		.input {
+			display :flex;
+			justify-content: center;
+		}
+
+		.row {
+			display: flex;
+		}
+
+		.column {
+			flex: 50%;
+		}
+
+	</style>
+
+</head>
+<body>
+	<div class="container">
+		<form class="input">
+			<p>
+				<input type="text" name="song" id="song">
+			</p>
+			<button id="addSong">Add to playlist</button>
+		</form>
+
+		<hr>
+		<h1>SongList</h1>
+		<hr>
+		<div class="songLists row">
+			<div class="col listenedSongs">
+				<h2>Listened</h2>
+				<ul id="listenedsonglist" style="list-style:none"></ul>
+			</div>
+			<div class="col notListenedSongs">
+				<h2>Not listened</h2>
+				<ul id="notlistenedsonglist" style="list-style:none"></ul>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		document.getElementById("addSong").addEventListener('click', event => {
+			event.preventDefault()
+
+			let song = document.getElementById('song').value
+			let songElem = document.createElement('li')
+			songElem.className = 'notListened'
+
+			songElem.innerHTML = `
+				<div class="card" style="width:18rem;">
+					<img src="https://image.shutterstock.com/image-vector/retro-vintage-microphone-vector-on-260nw-1412660609.jpg" class="card-img-top" alt="mic">
+					<div class="card-body notListened">
+						<h5 class="card-title">${song}</h5>
+						<p class="card-text">DESCRIPTION</p>
+						<button class="isListened">✓</button>
+        		<button class="delete">x</button>
+					</div>
+				</div>
+			`
+
+			document.getElementById('notlistenedsonglist').append(songElem)
+			document.getElementById('song').value = ''
+		})
+
+		document.addEventListener('click', event => {
+			if(event.target.className ==='delete') {
+				event.target.parentNode.parentNode.parentNode.remove()
+			}
+			else if(event.target.className === 'isListened') {
+				if(event.target.parentNode.classList.contains('notListened')) {
+					event.target.parentNode.classList.remove('notListened')
+					event.target.parentNode.classList.add('listened')
+					document.getElementById('listenedsonglist').append(event.target.parentNode.parentNode.parentNode)
+					// document.getElementById('notlistenedsonglist').remove(event.target.parentNode.parentNode.parentNode)
+				} else {
+					event.target.parentNode.classList.remove('listened')
+					event.target.parentNode.classList.add('notListened')
+					document.getElementById('notlistenedsonglist').append(event.target.parentNode.parentNode.parentNode)
+					// document.getElementById('listenedsonglist').remove(event.target.parentNode.parentNode.parentNode)
+				}
+			}
+		})
+
+	</script>
+</body>
+</html>
